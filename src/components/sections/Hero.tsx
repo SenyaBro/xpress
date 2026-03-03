@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Phone, MessageCircle, ArrowRight } from "lucide-react";
 import { siteConfig } from "@/src/config/data";
 import { Container } from "@/src/components/ui/Container";
-import { Button } from "@/src/components/ui/Button";
+import { Button, ButtonLink } from "@/src/components/ui/Button";
 
 export function Hero() {
   return (
@@ -62,29 +62,27 @@ export function Hero() {
           transition={{ duration: 0.5, delay: 0.3 }}
           className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto"
         >
-          <Button
-            asChild
+          <ButtonLink
+            href={siteConfig.contact.phoneLink}
             size="lg"
             className="w-full sm:w-auto group"
           >
-            <a href={siteConfig.contact.phoneLink}>
-              <Phone className="w-5 h-5 mr-2" />
-              Позвонить
-              <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-            </a>
-          </Button>
+            <Phone className="w-5 h-5 mr-2" />
+            Позвонить
+            <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+          </ButtonLink>
 
-          <Button
-            asChild
+          <ButtonLink
+            href={siteConfig.contact.telegram}
+            target="_blank"
+            rel="noopener noreferrer"
             variant="secondary"
             size="lg"
             className="w-full sm:w-auto group bg-[#229ED9]/10 text-[#229ED9] hover:bg-[#229ED9]/20 border border-[#229ED9]/20"
           >
-            <a href={siteConfig.contact.telegram} target="_blank" rel="noopener noreferrer">
-              <MessageCircle className="w-5 h-5 mr-2" />
-              Написать в Telegram
-            </a>
-          </Button>
+            <MessageCircle className="w-5 h-5 mr-2" />
+            Написать в Telegram
+          </ButtonLink>
         </motion.div>
 
         {/* Floating Elements (Abstract Tires/Rings) */}

@@ -1,14 +1,18 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Play, Gift, CheckCircle2, Phone, MessageCircle } from "lucide-react";
+import { Play, Gift, CheckCircle2, Phone, MessageCircle, Send } from "lucide-react";
 import { siteConfig } from "@/src/config/data";
 import { Container } from "@/src/components/ui/Container";
 import { Section } from "@/src/components/ui/Section";
-import { Button } from "@/src/components/ui/Button";
+import { Button, ButtonLink } from "@/src/components/ui/Button";
 
 export function LeadMagnet() {
-  const [gameState, setGameState] = useState<"intro" | "playing" | "won">("intro");
+  const [gameState, setGameState] = useState<"intro" | "playing" | "won" | "form" | "done">("intro");
   const [progress, setProgress] = useState(0);
+  
+  const [name, setName] = useState("");
+  const [contact, setContact] = useState("");
+  const [error, setError] = useState("");
 
   // Simple clicker game logic
   const handleClick = () => {
@@ -33,6 +37,21 @@ export function LeadMagnet() {
     
     return () => clearInterval(interval);
   }, [gameState]);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!contact.trim()) {
+      setError("Пожалуйста, укажите телефон или ник в Telegram");
+      return;
+    }
+    setError("");
+    setGameState("done");
+  };
+
+  const getTelegramLink = () => {
+    const text = `Здравствуйте! Хочу заказать шиномонтаж. Мой промокод: XPRESS10. ${name ? `Меня зовут ${name}. ` : ''}Мой контакт: ${contact}`;
+    return `https://t.me/${siteConfig.contact.telegram.split('/').pop()}?text=${encodeURIComponent(text)}`;
+  };
 
   return (
     <Section id="bonus" className="bg-brand-darker relative overflow-hidden py-24">
@@ -143,6 +162,7 @@ export function LeadMagnet() {
                 key="won"
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
                 className="glass-panel p-8 md:p-12 rounded-3xl border border-brand-lime bg-brand-lime/5"
               >
                 <div className="w-20 h-20 bg-brand-lime rounded-full flex items-center justify-center mx-auto mb-6 shadow-[0_0_30px_rgba(180,255,0,0.4)]">
@@ -156,25 +176,92 @@ export function LeadMagnet() {
                 </p>
                 
                 <div className="bg-brand-darker rounded-xl p-6 mb-8 border border-white/10">
-                  <p className="text-sm text-brand-muted mb-4">Назовите этот промокод при заказе:</p>
+                  <p className="text-sm text-brand-muted mb-4">Ваш промокод:</p>
                   <div className="text-3xl font-mono font-bold tracking-widest text-white bg-white/5 py-3 rounded-lg border border-white/10">
                     XPRESS10
                   </div>
                 </div>
                 
+                <Button size="lg" onClick={() => setGameState("form")} className="w-full sm:w-auto px-10">
+                  Использовать скидку
+                </Button>
+              </motion.div>
+            )}
+
+            {gameState === "form" && (
+              <motion.div
+                key="form"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                className="glass-panel p-8 md:p-12 rounded-3xl border border-brand-lime/20 text-left"
+              >
+                <h3 className="text-2xl font-bold text-white mb-2 text-center">Куда приехать?</h3>
+                <p className="text-brand-muted mb-8 text-center">
+                  Оставьте контакт, и мы свяжемся с вами для уточнения деталей.
+                </p>
+
+                <form onSubmit={handleSubmit} className="space-y-4 max-w-sm mx-auto">
+                  <div>
+                    <label htmlFor="name" className="block text-sm font-medium text-brand-muted mb-1">Имя (необязательно)</label>
+                    <input
+                      type="text"
+                      id="name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-lime"
+                      placeholder="Иван"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="contact" className="block text-sm font-medium text-brand-muted mb-1">Телефон или Telegram *</label>
+                    <input
+                      type="text"
+                      id="contact"
+                      value={contact}
+                      onChange={(e) => {
+                        setContact(e.target.value);
+                        if (error) setError("");
+                      }}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-lime"
+                      placeholder="+7 (999) 000-00-00 или @username"
+                    />
+                    {error && <p className="text-red-400 text-sm mt-1">{error}</p>}
+                  </div>
+                  <Button type="submit" size="lg" className="w-full mt-4">
+                    Продолжить
+                  </Button>
+                </form>
+              </motion.div>
+            )}
+
+            {gameState === "done" && (
+              <motion.div
+                key="done"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="glass-panel p-8 md:p-12 rounded-3xl border border-brand-lime bg-brand-lime/5"
+              >
+                <h3 className="text-2xl font-bold text-white mb-4">Отлично, {name || 'готово'}!</h3>
+                <p className="text-brand-muted mb-8">
+                  Выберите удобный способ связи, чтобы подтвердить заявку со скидкой.
+                </p>
+                
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button asChild size="lg">
-                    <a href={siteConfig.contact.phoneLink}>
-                      <Phone className="w-5 h-5 mr-2" />
-                      Вызвать мастера
-                    </a>
-                  </Button>
-                  <Button asChild variant="secondary" size="lg">
-                    <a href={siteConfig.contact.telegram} target="_blank" rel="noopener noreferrer">
-                      <MessageCircle className="w-5 h-5 mr-2 text-[#229ED9]" />
-                      Написать в Telegram
-                    </a>
-                  </Button>
+                  <ButtonLink href={siteConfig.contact.phoneLink} size="lg">
+                    <Phone className="w-5 h-5 mr-2" />
+                    Позвонить сейчас
+                  </ButtonLink>
+                  <ButtonLink 
+                    href={getTelegramLink()} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    variant="secondary" 
+                    size="lg"
+                  >
+                    <Send className="w-5 h-5 mr-2 text-[#229ED9]" />
+                    Отправить в Telegram
+                  </ButtonLink>
                 </div>
               </motion.div>
             )}

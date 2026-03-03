@@ -3,7 +3,7 @@ import { Phone, MessageCircle, MapPin, Clock, Mail } from "lucide-react";
 import { siteConfig } from "@/src/config/data";
 import { Container } from "@/src/components/ui/Container";
 import { Section, SectionHeader } from "@/src/components/ui/Section";
-import { Button } from "@/src/components/ui/Button";
+import { ButtonLink } from "@/src/components/ui/Button";
 
 export function Contacts() {
   return (
@@ -125,12 +125,10 @@ export function Contacts() {
               </p>
               
               <div className="flex flex-col gap-4">
-                <Button asChild size="lg" className="w-full h-16 text-lg">
-                  <a href={siteConfig.contact.phoneLink}>
-                    <Phone className="w-6 h-6 mr-3" />
-                    Позвонить {siteConfig.contact.phone}
-                  </a>
-                </Button>
+                <ButtonLink href={siteConfig.contact.phoneLink} size="lg" className="w-full h-16 text-lg">
+                  <Phone className="w-6 h-6 mr-3" />
+                  Позвонить {siteConfig.contact.phone}
+                </ButtonLink>
                 
                 <div className="relative flex items-center py-4">
                   <div className="flex-grow border-t border-white/10"></div>
@@ -138,19 +136,29 @@ export function Contacts() {
                   <div className="flex-grow border-t border-white/10"></div>
                 </div>
                 
-                <Button asChild variant="secondary" size="lg" className="w-full h-16 text-lg bg-[#229ED9]/10 text-[#229ED9] hover:bg-[#229ED9]/20 border border-[#229ED9]/20">
-                  <a href={siteConfig.contact.telegram} target="_blank" rel="noopener noreferrer">
-                    <MessageCircle className="w-6 h-6 mr-3" />
-                    Написать в Telegram
-                  </a>
-                </Button>
+                <ButtonLink 
+                  href={siteConfig.contact.telegram} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  variant="secondary" 
+                  size="lg" 
+                  className="w-full h-16 text-lg bg-[#229ED9]/10 text-[#229ED9] hover:bg-[#229ED9]/20 border border-[#229ED9]/20"
+                >
+                  <MessageCircle className="w-6 h-6 mr-3" />
+                  Написать в Telegram
+                </ButtonLink>
                 
-                <Button asChild variant="outline" size="lg" className="w-full h-16 text-lg border-white/10 hover:bg-white/5">
-                  <a href={siteConfig.contact.whatsapp} target="_blank" rel="noopener noreferrer">
-                    <MessageCircle className="w-6 h-6 mr-3 text-[#25D366]" />
-                    Написать в WhatsApp
-                  </a>
-                </Button>
+                <ButtonLink 
+                  href={siteConfig.contact.whatsapp} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  variant="outline" 
+                  size="lg" 
+                  className="w-full h-16 text-lg border-white/10 hover:bg-white/5"
+                >
+                  <MessageCircle className="w-6 h-6 mr-3 text-[#25D366]" />
+                  Написать в WhatsApp
+                </ButtonLink>
               </div>
               
               <p className="text-xs text-brand-muted text-center mt-6">

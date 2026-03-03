@@ -4,7 +4,7 @@ import { Calculator as CalcIcon, Phone, MessageCircle } from "lucide-react";
 import { siteConfig } from "@/src/config/data";
 import { Container } from "@/src/components/ui/Container";
 import { Section, SectionHeader } from "@/src/components/ui/Section";
-import { Button } from "@/src/components/ui/Button";
+import { ButtonLink } from "@/src/components/ui/Button";
 import { cn } from "@/src/utils/cn";
 
 export function Calculator() {
@@ -163,18 +163,20 @@ export function Calculator() {
               </div>
 
               <div className="space-y-3">
-                <Button asChild className="w-full">
-                  <a href={siteConfig.contact.phoneLink}>
-                    <Phone className="w-4 h-4 mr-2" />
-                    Вызвать мастера
-                  </a>
-                </Button>
-                <Button asChild variant="secondary" className="w-full">
-                  <a href={siteConfig.contact.telegram} target="_blank" rel="noopener noreferrer">
-                    <MessageCircle className="w-4 h-4 mr-2 text-[#229ED9]" />
-                    Уточнить в Telegram
-                  </a>
-                </Button>
+                <ButtonLink href={siteConfig.contact.phoneLink} className="w-full">
+                  <Phone className="w-4 h-4 mr-2" />
+                  Вызвать мастера
+                </ButtonLink>
+                <ButtonLink 
+                  href={siteConfig.contact.telegram} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  variant="secondary" 
+                  className="w-full"
+                >
+                  <MessageCircle className="w-4 h-4 mr-2 text-[#229ED9]" />
+                  Уточнить в Telegram
+                </ButtonLink>
               </div>
             </div>
           </div>
