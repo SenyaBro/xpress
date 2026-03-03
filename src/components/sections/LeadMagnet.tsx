@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Play, Gift, CheckCircle2, Phone, MessageCircle, Send } from "lucide-react";
 import { siteConfig } from "@/src/config/data";
 import { Container } from "@/src/components/ui/Container";
@@ -7,6 +7,7 @@ import { Section } from "@/src/components/ui/Section";
 import { Button, ButtonLink } from "@/src/components/ui/Button";
 
 export function LeadMagnet() {
+  const shouldReduceMotion = useReducedMotion();
   const [gameState, setGameState] = useState<"intro" | "playing" | "won" | "form" | "done">("intro");
   const [progress, setProgress] = useState(0);
   
@@ -63,13 +64,13 @@ export function LeadMagnet() {
             {gameState === "intro" && (
               <motion.div
                 key="intro"
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9 }}
+                exit={{ opacity: 0, scale: shouldReduceMotion ? 1 : 0.9 }}
                 className="glass-panel p-8 md:p-12 rounded-3xl border border-brand-lime/20"
               >
                 <div className="w-16 h-16 bg-brand-lime/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Gift className="w-8 h-8 text-brand-lime" />
+                  <Gift className="w-8 h-8 text-brand-lime" aria-hidden="true" />
                 </div>
                 <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-4">
                   Получите скидку 10%
@@ -78,7 +79,7 @@ export function LeadMagnet() {
                   Соберите колесо за 10 секунд, чтобы разблокировать персональный промокод на первый вызов.
                 </p>
                 <Button size="lg" onClick={() => setGameState("playing")} className="px-10">
-                  <Play className="w-5 h-5 mr-2" />
+                  <Play className="w-5 h-5 mr-2" aria-hidden="true" />
                   Начать игру
                 </Button>
               </motion.div>
@@ -87,24 +88,26 @@ export function LeadMagnet() {
             {gameState === "playing" && (
               <motion.div
                 key="playing"
-                initial={{ opacity: 0, scale: 0.9 }}
+                initial={{ opacity: 0, scale: shouldReduceMotion ? 1 : 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 1.1 }}
+                exit={{ opacity: 0, scale: shouldReduceMotion ? 1 : 1.1 }}
                 className="glass-panel p-8 md:p-12 rounded-3xl border border-brand-lime/50 text-center"
               >
                 <h3 className="text-2xl font-bold text-white mb-8">Закрутите все болты!</h3>
                 
-                <div 
-                  className="relative w-48 h-48 mx-auto mb-8 cursor-pointer select-none touch-manipulation"
+                <button 
+                  type="button"
+                  className="relative w-48 h-48 mx-auto mb-8 cursor-pointer select-none touch-manipulation focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-lime rounded-full block"
                   onClick={handleClick}
+                  aria-label="Нажать чтобы закрутить болты"
                 >
                   {/* Tire base */}
-                  <div className="absolute inset-0 rounded-full border-[16px] border-[#1a1a1a] bg-[#2a2a2a] shadow-inner flex items-center justify-center">
+                  <div className="absolute inset-0 rounded-full border-[16px] border-[#1a1a1a] bg-[#2a2a2a] shadow-inner flex items-center justify-center pointer-events-none">
                     {/* Rim */}
                     <div className="w-24 h-24 rounded-full border-4 border-[#4a4a4a] bg-[#3a3a3a] flex items-center justify-center relative">
                       {/* Center cap */}
                       <div className="w-8 h-8 rounded-full bg-brand-lime/20 flex items-center justify-center">
-                        <span className="text-brand-lime font-bold text-xs">X</span>
+                        <span className="text-brand-lime font-bold text-xs" aria-hidden="true">X</span>
                       </div>
                       
                       {/* Bolts (visual representation of progress) */}
@@ -113,10 +116,11 @@ export function LeadMagnet() {
                         return (
                           <div 
                             key={deg}
-                            className={`absolute w-4 h-4 rounded-full transition-colors duration-300 ${isTight ? 'bg-brand-lime' : 'bg-[#5a5a5a]'}`}
+                            className={`absolute w-4 h-4 rounded-full transition-colors duration-300 motion-reduce:transition-none ${isTight ? 'bg-brand-lime' : 'bg-[#5a5a5a]'}`}
                             style={{
                               transform: `rotate(${deg}deg) translateY(-28px)`,
                             }}
+                            aria-hidden="true"
                           />
                         );
                       })}
@@ -124,7 +128,7 @@ export function LeadMagnet() {
                   </div>
                   
                   {/* Progress ring overlay */}
-                  <svg className="absolute inset-0 w-full h-full -rotate-90 pointer-events-none">
+                  <svg className="absolute inset-0 w-full h-full -rotate-90 pointer-events-none" aria-hidden="true">
                     <circle
                       cx="96"
                       cy="96"
@@ -142,15 +146,15 @@ export function LeadMagnet() {
                       strokeWidth="4"
                       strokeDasharray="553"
                       strokeDashoffset={553 - (553 * progress) / 100}
-                      className="transition-all duration-200 ease-out"
+                      className="transition-all duration-200 ease-out motion-reduce:transition-none"
                     />
                   </svg>
-                </div>
+                </button>
                 
-                <p className="text-brand-muted mb-4">Жмите на колесо как можно быстрее!</p>
-                <div className="w-full bg-white/10 rounded-full h-2 mb-2">
+                <p className="text-brand-muted mb-4" aria-live="polite">Прогресс: {progress}%</p>
+                <div className="w-full bg-white/10 rounded-full h-2 mb-2" aria-hidden="true">
                   <div 
-                    className="bg-brand-lime h-2 rounded-full transition-all duration-200"
+                    className="bg-brand-lime h-2 rounded-full transition-all duration-200 motion-reduce:transition-none"
                     style={{ width: `${progress}%` }}
                   />
                 </div>
@@ -160,13 +164,13 @@ export function LeadMagnet() {
             {gameState === "won" && (
               <motion.div
                 key="won"
-                initial={{ opacity: 0, scale: 0.9 }}
+                initial={{ opacity: 0, scale: shouldReduceMotion ? 1 : 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
+                exit={{ opacity: 0, scale: shouldReduceMotion ? 1 : 0.9 }}
                 className="glass-panel p-8 md:p-12 rounded-3xl border border-brand-lime bg-brand-lime/5"
               >
                 <div className="w-20 h-20 bg-brand-lime rounded-full flex items-center justify-center mx-auto mb-6 shadow-[0_0_30px_rgba(180,255,0,0.4)]">
-                  <CheckCircle2 className="w-10 h-10 text-brand-dark" />
+                  <CheckCircle2 className="w-10 h-10 text-brand-dark" aria-hidden="true" />
                 </div>
                 <h2 className="text-3xl font-display font-bold text-white mb-2">
                   Отличная работа!
@@ -177,7 +181,7 @@ export function LeadMagnet() {
                 
                 <div className="bg-brand-darker rounded-xl p-6 mb-8 border border-white/10">
                   <p className="text-sm text-brand-muted mb-4">Ваш промокод:</p>
-                  <div className="text-3xl font-mono font-bold tracking-widest text-white bg-white/5 py-3 rounded-lg border border-white/10">
+                  <div className="text-3xl font-mono font-bold tracking-widest text-white bg-white/5 py-3 rounded-lg border border-white/10" aria-label="Промокод XPRESS10">
                     XPRESS10
                   </div>
                 </div>
@@ -191,9 +195,9 @@ export function LeadMagnet() {
             {gameState === "form" && (
               <motion.div
                 key="form"
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9 }}
+                exit={{ opacity: 0, scale: shouldReduceMotion ? 1 : 0.9 }}
                 className="glass-panel p-8 md:p-12 rounded-3xl border border-brand-lime/20 text-left"
               >
                 <h3 className="text-2xl font-bold text-white mb-2 text-center">Куда приехать?</h3>
@@ -209,7 +213,7 @@ export function LeadMagnet() {
                       id="name"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-lime"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
                       placeholder="Иван"
                     />
                   </div>
@@ -223,10 +227,12 @@ export function LeadMagnet() {
                         setContact(e.target.value);
                         if (error) setError("");
                       }}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-lime"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
                       placeholder="+7 (999) 000-00-00 или @username"
+                      aria-invalid={!!error}
+                      aria-describedby={error ? "contact-error" : undefined}
                     />
-                    {error && <p className="text-red-400 text-sm mt-1">{error}</p>}
+                    {error && <p id="contact-error" className="text-red-400 text-sm mt-1" role="alert">{error}</p>}
                   </div>
                   <Button type="submit" size="lg" className="w-full mt-4">
                     Продолжить
@@ -238,7 +244,7 @@ export function LeadMagnet() {
             {gameState === "done" && (
               <motion.div
                 key="done"
-                initial={{ opacity: 0, scale: 0.9 }}
+                initial={{ opacity: 0, scale: shouldReduceMotion ? 1 : 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 className="glass-panel p-8 md:p-12 rounded-3xl border border-brand-lime bg-brand-lime/5"
               >
@@ -249,7 +255,7 @@ export function LeadMagnet() {
                 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <ButtonLink href={siteConfig.contact.phoneLink} size="lg">
-                    <Phone className="w-5 h-5 mr-2" />
+                    <Phone className="w-5 h-5 mr-2" aria-hidden="true" />
                     Позвонить сейчас
                   </ButtonLink>
                   <ButtonLink 
@@ -259,7 +265,7 @@ export function LeadMagnet() {
                     variant="secondary" 
                     size="lg"
                   >
-                    <Send className="w-5 h-5 mr-2 text-[#229ED9]" />
+                    <Send className="w-5 h-5 mr-2 text-[#229ED9]" aria-hidden="true" />
                     Отправить в Telegram
                   </ButtonLink>
                 </div>

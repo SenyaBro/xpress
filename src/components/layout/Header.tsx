@@ -46,7 +46,7 @@ export function Header() {
             <a
               key={link.name}
               href={link.href}
-              className="text-sm font-medium text-brand-muted hover:text-white transition-colors"
+              className="text-sm font-medium text-brand-muted hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-2 py-1"
             >
               {link.name}
             </a>
@@ -57,28 +57,31 @@ export function Header() {
         <div className="hidden md:flex items-center gap-4">
           <a
             href={siteConfig.contact.phoneLink}
-            className="flex items-center gap-2 text-sm font-medium text-white hover:text-brand-lime transition-colors"
+            className="flex items-center gap-2 text-sm font-medium text-white hover:text-brand-lime transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-2 py-1"
           >
-            <Phone className="w-4 h-4" />
+            <Phone className="w-4 h-4" aria-hidden="true" />
             {siteConfig.contact.phone}
           </a>
           <a
             href={siteConfig.contact.telegram}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-xl text-sm font-medium transition-colors"
+            className="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-xl text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
           >
-            <MessageCircle className="w-4 h-4 text-[#229ED9]" />
+            <MessageCircle className="w-4 h-4 text-[#229ED9]" aria-hidden="true" />
             Telegram
           </a>
         </div>
 
         {/* Mobile Menu Toggle */}
         <button
-          className="md:hidden p-2 text-white"
+          className="md:hidden p-2 text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded-lg"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          aria-label={isMobileMenuOpen ? "Закрыть меню" : "Открыть меню"}
+          aria-expanded={isMobileMenuOpen}
+          aria-controls="mobile-menu"
         >
-          {isMobileMenuOpen ? <X /> : <Menu />}
+          {isMobileMenuOpen ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
         </button>
       </Container>
 
@@ -86,6 +89,7 @@ export function Header() {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
+            id="mobile-menu"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
@@ -96,7 +100,7 @@ export function Header() {
                 <a
                   key={link.name}
                   href={link.href}
-                  className="text-lg font-medium text-white/80 hover:text-white p-2 rounded-lg hover:bg-white/5"
+                  className="text-lg font-medium text-white/80 hover:text-white p-2 rounded-lg hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {link.name}

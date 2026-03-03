@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Calculator as CalcIcon, Phone, MessageCircle } from "lucide-react";
 import { siteConfig } from "@/src/config/data";
 import { Container } from "@/src/components/ui/Container";
@@ -8,6 +8,7 @@ import { ButtonLink } from "@/src/components/ui/Button";
 import { cn } from "@/src/utils/cn";
 
 export function Calculator() {
+  const shouldReduceMotion = useReducedMotion();
   const [service, setService] = useState(siteConfig.services[0].id);
   const [radius, setRadius] = useState(Object.keys(siteConfig.calculator.radiusMultipliers)[0]);
   const [vehicle, setVehicle] = useState(Object.keys(siteConfig.calculator.vehicleTypes)[0]);
@@ -45,13 +46,15 @@ export function Calculator() {
                   {siteConfig.services.map((s) => (
                     <button
                       key={s.id}
+                      type="button"
                       onClick={() => setService(s.id)}
                       className={cn(
-                        "px-4 py-3 rounded-xl text-left text-sm font-medium transition-all border",
+                        "px-4 py-3 rounded-xl text-left text-sm font-medium transition-all border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime",
                         service === s.id
                           ? "bg-brand-lime/10 border-brand-lime text-brand-lime"
                           : "bg-white/5 border-white/10 text-white hover:bg-white/10"
                       )}
+                      aria-pressed={service === s.id}
                     >
                       {s.title}
                     </button>
@@ -62,11 +65,12 @@ export function Calculator() {
               {/* Radius & Vehicle */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                 <div>
-                  <label className="block text-sm font-medium text-brand-muted mb-3 uppercase tracking-wider">Радиус колес</label>
+                  <label htmlFor="radius-select" className="block text-sm font-medium text-brand-muted mb-3 uppercase tracking-wider">Радиус колес</label>
                   <select
+                    id="radius-select"
                     value={radius}
                     onChange={(e) => setRadius(e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-lime appearance-none"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime appearance-none"
                   >
                     {Object.keys(siteConfig.calculator.radiusMultipliers).map((r) => (
                       <option key={r} value={r} className="bg-brand-dark text-white">{r}</option>
@@ -74,11 +78,12 @@ export function Calculator() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-brand-muted mb-3 uppercase tracking-wider">Тип авто</label>
+                  <label htmlFor="vehicle-select" className="block text-sm font-medium text-brand-muted mb-3 uppercase tracking-wider">Тип авто</label>
                   <select
+                    id="vehicle-select"
                     value={vehicle}
                     onChange={(e) => setVehicle(e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-lime appearance-none"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime appearance-none"
                   >
                     {Object.keys(siteConfig.calculator.vehicleTypes).map((v) => (
                       <option key={v} value={v} className="bg-brand-dark text-white">{v}</option>
@@ -95,13 +100,15 @@ export function Calculator() {
                     {Object.keys(siteConfig.calculator.urgency).map((u) => (
                       <button
                         key={u}
+                        type="button"
                         onClick={() => setUrgency(u)}
                         className={cn(
-                          "px-4 py-2 rounded-lg text-left text-sm transition-all border",
+                          "px-4 py-2 rounded-lg text-left text-sm transition-all border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime",
                           urgency === u
                             ? "bg-brand-lime/10 border-brand-lime text-brand-lime"
                             : "bg-transparent border-transparent text-brand-muted hover:text-white"
                         )}
+                        aria-pressed={urgency === u}
                       >
                         {u}
                       </button>
@@ -114,13 +121,15 @@ export function Calculator() {
                     {Object.keys(siteConfig.calculator.distance).map((d) => (
                       <button
                         key={d}
+                        type="button"
                         onClick={() => setDistance(d)}
                         className={cn(
-                          "px-4 py-2 rounded-lg text-left text-sm transition-all border",
+                          "px-4 py-2 rounded-lg text-left text-sm transition-all border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime",
                           distance === d
                             ? "bg-brand-lime/10 border-brand-lime text-brand-lime"
                             : "bg-transparent border-transparent text-brand-muted hover:text-white"
                         )}
+                        aria-pressed={distance === d}
                       >
                         {d}
                       </button>
@@ -135,7 +144,7 @@ export function Calculator() {
               <div>
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-10 h-10 rounded-full bg-brand-lime/10 flex items-center justify-center text-brand-lime">
-                    <CalcIcon className="w-5 h-5" />
+                    <CalcIcon className="w-5 h-5" aria-hidden="true" />
                   </div>
                   <h3 className="text-xl font-bold text-white">Итого</h3>
                 </div>
@@ -148,7 +157,7 @@ export function Calculator() {
                   <span className="text-sm text-brand-muted">от</span>
                   <motion.span 
                     key={estimatedPrice}
-                    initial={{ opacity: 0, y: -10 }}
+                    initial={{ opacity: 0, y: shouldReduceMotion ? 0 : -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="text-4xl md:text-5xl font-display font-bold text-brand-lime"
                   >
@@ -164,7 +173,7 @@ export function Calculator() {
 
               <div className="space-y-3">
                 <ButtonLink href={siteConfig.contact.phoneLink} className="w-full">
-                  <Phone className="w-4 h-4 mr-2" />
+                  <Phone className="w-4 h-4 mr-2" aria-hidden="true" />
                   Вызвать мастера
                 </ButtonLink>
                 <ButtonLink 
@@ -174,7 +183,7 @@ export function Calculator() {
                   variant="secondary" 
                   className="w-full"
                 >
-                  <MessageCircle className="w-4 h-4 mr-2 text-[#229ED9]" />
+                  <MessageCircle className="w-4 h-4 mr-2 text-[#229ED9]" aria-hidden="true" />
                   Уточнить в Telegram
                 </ButtonLink>
               </div>

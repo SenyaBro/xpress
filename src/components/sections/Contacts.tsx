@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Phone, MessageCircle, MapPin, Clock, Mail } from "lucide-react";
 import { siteConfig } from "@/src/config/data";
 import { Container } from "@/src/components/ui/Container";
@@ -6,6 +6,8 @@ import { Section, SectionHeader } from "@/src/components/ui/Section";
 import { ButtonLink } from "@/src/components/ui/Button";
 
 export function Contacts() {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <Section id="contacts" className="bg-brand-dark relative overflow-hidden">
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-brand-lime/5 rounded-full blur-[100px] opacity-50 pointer-events-none" />
@@ -20,7 +22,7 @@ export function Contacts() {
           {/* Contact Info */}
           <div className="space-y-8">
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
+              initial={{ opacity: 0, x: shouldReduceMotion ? 0 : -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
@@ -35,50 +37,50 @@ export function Contacts() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.1 }}
+                transition={{ duration: 0.5, delay: shouldReduceMotion ? 0 : 0.1 }}
                 className="glass-panel p-6 rounded-2xl border border-white/5 flex flex-col gap-4"
               >
                 <div className="w-12 h-12 rounded-xl bg-brand-lime/10 flex items-center justify-center text-brand-lime">
-                  <Phone className="w-6 h-6" />
+                  <Phone className="w-6 h-6" aria-hidden="true" />
                 </div>
                 <div>
                   <p className="text-sm text-brand-muted mb-1">Телефон</p>
-                  <a href={siteConfig.contact.phoneLink} className="text-xl font-bold text-white hover:text-brand-lime transition-colors">
+                  <a href={siteConfig.contact.phoneLink} className="text-xl font-bold text-white hover:text-brand-lime transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 -ml-1">
                     {siteConfig.contact.phone}
                   </a>
                 </div>
               </motion.div>
 
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.2 }}
+                transition={{ duration: 0.5, delay: shouldReduceMotion ? 0 : 0.2 }}
                 className="glass-panel p-6 rounded-2xl border border-white/5 flex flex-col gap-4"
               >
                 <div className="w-12 h-12 rounded-xl bg-[#229ED9]/10 flex items-center justify-center text-[#229ED9]">
-                  <MessageCircle className="w-6 h-6" />
+                  <MessageCircle className="w-6 h-6" aria-hidden="true" />
                 </div>
                 <div>
                   <p className="text-sm text-brand-muted mb-1">Мессенджеры</p>
-                  <a href={siteConfig.contact.telegram} target="_blank" rel="noopener noreferrer" className="text-lg font-bold text-white hover:text-[#229ED9] transition-colors">
+                  <a href={siteConfig.contact.telegram} target="_blank" rel="noopener noreferrer" className="text-lg font-bold text-white hover:text-[#229ED9] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#229ED9] rounded px-1 -ml-1">
                     Telegram
                   </a>
                 </div>
               </motion.div>
 
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.3 }}
+                transition={{ duration: 0.5, delay: shouldReduceMotion ? 0 : 0.3 }}
                 className="glass-panel p-6 rounded-2xl border border-white/5 flex flex-col gap-4"
               >
                 <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-white">
-                  <Clock className="w-6 h-6" />
+                  <Clock className="w-6 h-6" aria-hidden="true" />
                 </div>
                 <div>
                   <p className="text-sm text-brand-muted mb-1">Режим работы</p>
@@ -89,14 +91,14 @@ export function Contacts() {
               </motion.div>
 
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.4 }}
+                transition={{ duration: 0.5, delay: shouldReduceMotion ? 0 : 0.4 }}
                 className="glass-panel p-6 rounded-2xl border border-white/5 flex flex-col gap-4"
               >
                 <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-white">
-                  <MapPin className="w-6 h-6" />
+                  <MapPin className="w-6 h-6" aria-hidden="true" />
                 </div>
                 <div>
                   <p className="text-sm text-brand-muted mb-1">Базирование</p>
@@ -110,7 +112,7 @@ export function Contacts() {
 
           {/* Contact Form / CTA Box */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: shouldReduceMotion ? 1 : 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
@@ -126,7 +128,7 @@ export function Contacts() {
               
               <div className="flex flex-col gap-4">
                 <ButtonLink href={siteConfig.contact.phoneLink} size="lg" className="w-full h-16 text-lg">
-                  <Phone className="w-6 h-6 mr-3" />
+                  <Phone className="w-6 h-6 mr-3" aria-hidden="true" />
                   Позвонить {siteConfig.contact.phone}
                 </ButtonLink>
                 
@@ -144,7 +146,7 @@ export function Contacts() {
                   size="lg" 
                   className="w-full h-16 text-lg bg-[#229ED9]/10 text-[#229ED9] hover:bg-[#229ED9]/20 border border-[#229ED9]/20"
                 >
-                  <MessageCircle className="w-6 h-6 mr-3" />
+                  <MessageCircle className="w-6 h-6 mr-3" aria-hidden="true" />
                   Написать в Telegram
                 </ButtonLink>
                 
@@ -156,7 +158,7 @@ export function Contacts() {
                   size="lg" 
                   className="w-full h-16 text-lg border-white/10 hover:bg-white/5"
                 >
-                  <MessageCircle className="w-6 h-6 mr-3 text-[#25D366]" />
+                  <MessageCircle className="w-6 h-6 mr-3 text-[#25D366]" aria-hidden="true" />
                   Написать в WhatsApp
                 </ButtonLink>
               </div>

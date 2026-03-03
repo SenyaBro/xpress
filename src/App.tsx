@@ -4,6 +4,7 @@ import { Hero } from "@/src/components/sections/Hero";
 import { About } from "@/src/components/sections/About";
 import { Coverage } from "@/src/components/sections/Coverage";
 import { Services } from "@/src/components/sections/Services";
+import { Pricing } from "@/src/components/sections/Pricing";
 import { Calculator } from "@/src/components/sections/Calculator";
 import { LeadMagnet } from "@/src/components/sections/LeadMagnet";
 import { Contacts } from "@/src/components/sections/Contacts";
@@ -17,6 +18,7 @@ export default function App() {
         <About />
         <Coverage />
         <Services />
+        <Pricing />
         <Calculator />
         <LeadMagnet />
         <Contacts />

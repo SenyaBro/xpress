@@ -7,8 +7,8 @@ export function Footer() {
       <Container>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div className="col-span-1 md:col-span-2">
-            <a href="#" className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-full bg-brand-lime flex items-center justify-center text-brand-dark font-display font-bold text-lg">
+            <a href="#" className="flex items-center gap-2 mb-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 -ml-1">
+              <div className="w-8 h-8 rounded-full bg-brand-lime flex items-center justify-center text-brand-dark font-display font-bold text-lg" aria-hidden="true">
                 X
               </div>
               <span className="font-display font-bold text-xl tracking-tight text-white">
@@ -23,10 +23,10 @@ export function Footer() {
           <div>
             <h4 className="text-white font-medium mb-4">Навигация</h4>
             <ul className="space-y-2">
-              <li><a href="#about" className="text-brand-muted hover:text-white transition-colors">О нас</a></li>
-              <li><a href="#services" className="text-brand-muted hover:text-white transition-colors">Услуги</a></li>
-              <li><a href="#pricing" className="text-brand-muted hover:text-white transition-colors">Цены</a></li>
-              <li><a href="#calculator" className="text-brand-muted hover:text-white transition-colors">Калькулятор</a></li>
+              <li><a href="#about" className="text-brand-muted hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 -ml-1">О нас</a></li>
+              <li><a href="#services" className="text-brand-muted hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 -ml-1">Услуги</a></li>
+              <li><a href="#pricing" className="text-brand-muted hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 -ml-1">Цены</a></li>
+              <li><a href="#calculator" className="text-brand-muted hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 -ml-1">Калькулятор</a></li>
             </ul>
           </div>
 
@@ -34,7 +34,7 @@ export function Footer() {
             <h4 className="text-white font-medium mb-4">Контакты</h4>
             <ul className="space-y-2">
               <li>
-                <a href={siteConfig.contact.phoneLink} className="text-brand-lime hover:underline font-medium">
+                <a href={siteConfig.contact.phoneLink} className="text-brand-lime hover:underline font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 -ml-1">
                   {siteConfig.contact.phone}
                 </a>
               </li>
@@ -49,8 +49,8 @@ export function Footer() {
             © {new Date().getFullYear()} {siteConfig.name}. Все права защищены.
           </p>
           <div className="flex items-center gap-4 text-sm text-brand-muted">
-            <a href="#" className="hover:text-white transition-colors">Политика конфиденциальности</a>
-            <a href="#" className="hover:text-white transition-colors">Договор оферты</a>
+            <a href="#" className="hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1">Политика конфиденциальности</a>
+            <a href="#" className="hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1">Договор оферты</a>
           </div>
         </div>
       </Container>
