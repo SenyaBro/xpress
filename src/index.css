@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  
+  --color-brand-lime: #b4ff00;
+  --color-brand-lime-hover: #9ee000;
+  --color-brand-dark: #0a0b10;
+  --color-brand-darker: #050508;
+  --color-brand-card: #14151c;
+  --color-brand-card-hover: #1c1d26;
+  --color-brand-text: #e2e8f0;
+  --color-brand-muted: #94a3b8;
+}
+
+@layer base {
+  body {
+    @apply bg-brand-dark text-brand-text font-sans antialiased selection:bg-brand-lime selection:text-brand-dark;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display text-white;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60;
+  }
+  
+  .glass-panel {
+    @apply bg-brand-card/80 backdrop-blur-md border border-white/5;
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
