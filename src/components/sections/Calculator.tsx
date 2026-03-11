@@ -34,8 +34,8 @@ export function Calculator() {
 
   const estimatedPrice = useMemo(() => {
     if (isStorage) {
-      if (radius === "13-15") return 4000;
-      if (radius === "16-19") return 5000;
+      if (radius === "R13-R15") return 4000;
+      if (radius === "R16-R19") return 5000;
       return 6000;
     }
 
@@ -68,7 +68,9 @@ export function Calculator() {
       distance as keyof typeof siteConfig.calculator.distance
       ] || 0;
 
-    return Math.round(basePrice * radiusMult * vehicleMult * urgencyMult + distanceAdd);
+    return Math.round(
+      basePrice * radiusMult * vehicleMult * urgencyMult + distanceAdd
+    );
   }, [
     service,
     radius,
@@ -181,7 +183,7 @@ export function Calculator() {
               ) : isStorage ? (
                 <p className="text-sm text-brand-muted -mt-4">
                   Для хранения шин учитывается только размер комплекта:
-                  13–15 — 4 000 ₽, 16–19 — 5 000 ₽, 20+ — 6 000 ₽.
+                  R13–R15 — 4 000 ₽, R16–R19 — 5 000 ₽, R20+ — 6 000 ₽.
                 </p>
               ) : null}
 
