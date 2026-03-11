@@ -15,17 +15,37 @@ export function Calculator() {
   const [urgency, setUrgency] = useState(Object.keys(siteConfig.calculator.urgency)[0]);
   const [distance, setDistance] = useState(Object.keys(siteConfig.calculator.distance)[0]);
 
+  const isDistanceUrgencyOnly = service === "battery" || service === "fuel";
   const estimatedPrice = useMemo(() => {
-    const baseService = siteConfig.services.find(s => s.id === service);
-    const basePrice = baseService ? baseService.priceFrom : siteConfig.calculator.basePrice;
-    
-    const radiusMult = siteConfig.calculator.radiusMultipliers[radius as keyof typeof siteConfig.calculator.radiusMultipliers] || 1;
-    const vehicleMult = siteConfig.calculator.vehicleTypes[vehicle as keyof typeof siteConfig.calculator.vehicleTypes] || 1;
-    const urgencyMult = siteConfig.calculator.urgency[urgency as keyof typeof siteConfig.calculator.urgency] || 1;
-    const distanceAdd = siteConfig.calculator.distance[distance as keyof typeof siteConfig.calculator.distance] || 0;
+    const baseService = siteConfig.services.find((s) => s.id === service);
+    const basePrice = baseService
+      ? baseService.priceFrom
+      : siteConfig.calculator.basePrice;
 
-    return Math.round((basePrice * radiusMult * vehicleMult * urgencyMult) + distanceAdd);
-  }, [service, radius, vehicle, urgency, distance]);
+    const radiusMult = isDistanceUrgencyOnly
+      ? 1
+      : siteConfig.calculator.radiusMultipliers[
+      radius as keyof typeof siteConfig.calculator.radiusMultipliers
+      ] || 1;
+
+    const vehicleMult = isDistanceUrgencyOnly
+      ? 1
+      : siteConfig.calculator.vehicleTypes[
+      vehicle as keyof typeof siteConfig.calculator.vehicleTypes
+      ] || 1;
+
+    const urgencyMult =
+      siteConfig.calculator.urgency[
+      urgency as keyof typeof siteConfig.calculator.urgency
+      ] || 1;
+
+    const distanceAdd =
+      siteConfig.calculator.distance[
+      distance as keyof typeof siteConfig.calculator.distance
+      ] || 0;
+
+    return Math.round(basePrice * radiusMult * vehicleMult * urgencyMult + distanceAdd);
+  }, [service, radius, vehicle, urgency, distance, isDistanceUrgencyOnly]);
 
   return (
     <Section id="calculator" className="bg-brand-dark">
@@ -70,7 +90,13 @@ export function Calculator() {
                     id="radius-select"
                     value={radius}
                     onChange={(e) => setRadius(e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime appearance-none"
+                    disabled={isDistanceUrgencyOnly}
+                    className={cn(
+                      "w-full border rounded-xl px-4 py-3 text-white appearance-none",
+                      isDistanceUrgencyOnly
+                        ? "bg-white/[0.03] border-white/5 text-brand-muted cursor-not-allowed opacity-50"
+                        : "bg-white/5 border-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
+                    )}
                   >
                     {Object.keys(siteConfig.calculator.radiusMultipliers).map((r) => (
                       <option key={r} value={r} className="bg-brand-dark text-white">{r}</option>
@@ -83,7 +109,13 @@ export function Calculator() {
                     id="vehicle-select"
                     value={vehicle}
                     onChange={(e) => setVehicle(e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime appearance-none"
+                    disabled={isDistanceUrgencyOnly}
+                    className={cn(
+                      "w-full border rounded-xl px-4 py-3 text-white appearance-none",
+                      isDistanceUrgencyOnly
+                        ? "bg-white/[0.03] border-white/5 text-brand-muted cursor-not-allowed opacity-50"
+                        : "bg-white/5 border-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
+                    )}
                   >
                     {Object.keys(siteConfig.calculator.vehicleTypes).map((v) => (
                       <option key={v} value={v} className="bg-brand-dark text-white">{v}</option>
@@ -91,7 +123,11 @@ export function Calculator() {
                   </select>
                 </div>
               </div>
-
+              {isDistanceUrgencyOnly ? (
+                <p className="text-sm text-brand-muted -mt-4">
+                  Для этой услуги учитываются только срочность и удаленность. Параметры радиуса и типа авто не влияют на расчет.
+                </p>
+              ) : null}
               {/* Urgency & Distance */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                 <div>
@@ -148,14 +184,14 @@ export function Calculator() {
                   </div>
                   <h3 className="text-xl font-bold text-white">Итого</h3>
                 </div>
-                
+
                 <div className="mb-2">
                   <span className="text-sm text-brand-muted uppercase tracking-wider">Ориентировочно</span>
                 </div>
-                
+
                 <div className="flex items-baseline gap-2 mb-8">
                   <span className="text-sm text-brand-muted">от</span>
-                  <motion.span 
+                  <motion.span
                     key={estimatedPrice}
                     initial={{ opacity: 0, y: shouldReduceMotion ? 0 : -10 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -165,7 +201,7 @@ export function Calculator() {
                   </motion.span>
                   <span className="text-xl text-brand-muted">₽</span>
                 </div>
-                
+
                 <p className="text-xs text-brand-muted mb-8 leading-relaxed">
                   * Расчет является предварительным. Точная стоимость зависит от сложности работ и расходных материалов.
                 </p>
@@ -176,11 +212,11 @@ export function Calculator() {
                   <Phone className="w-4 h-4 mr-2" aria-hidden="true" />
                   Вызвать мастера
                 </ButtonLink>
-                <ButtonLink 
-                  href={siteConfig.contact.telegram} 
-                  target="_blank" 
+                <ButtonLink
+                  href={siteConfig.contact.telegram}
+                  target="_blank"
                   rel="noopener noreferrer"
-                  variant="secondary" 
+                  variant="secondary"
                   className="w-full"
                 >
                   <MessageCircle className="w-4 h-4 mr-2 text-[#229ED9]" aria-hidden="true" />
