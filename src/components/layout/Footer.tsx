@@ -12,7 +12,7 @@ export function Footer() {
               className="inline-flex items-center mb-4 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
             >
               <img
-                src={`${import.meta.env.BASE_URL}logo-xpresso.png`}
+                src={`${import.meta.env.BASE_URL}logo-xpresso.jpg`}
                 alt="Экспрессо"
                 className="h-10 w-auto object-contain"
               />
