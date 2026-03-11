@@ -35,8 +35,8 @@ export function Header() {
           className="flex items-center rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
         >
           <img
-            src="/logo-xpresso.png"
-            alt="Х-прессО"
+            src={`${import.meta.env.BASE_URL}logo-xpresso.png`}
+            alt="ЭспрессО"
             className="h-10 md:h-12 w-auto object-contain"
           />
         </a>
