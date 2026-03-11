@@ -21,7 +21,7 @@ export function About() {
           subtitle="Концепция"
         />
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-24">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-24 max-w-5xl mx-auto">
           {siteConfig.about.features.map((feature, index) => {
             const Icon = icons[feature.title as keyof typeof icons] || CheckCircle2;
             return (
@@ -61,7 +61,7 @@ export function About() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {siteConfig.about.equipment.items.map((item, index) => (
               <motion.div
                 key={item.name}
