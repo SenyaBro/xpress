@@ -7,7 +7,7 @@ export const siteConfig = {
     telegram: "https://t.me/xpress_tire",
     max: "https:/79122897218",
     schedule: "Ежедневно с 10:00 до 22:00",
-    address: "г. Сысерть, КП «Заповедник»,
+    address: "г. Сысерть, КП «Заповедник»",
   },
   hero: {
     title: "Лучший шиномонтаж",

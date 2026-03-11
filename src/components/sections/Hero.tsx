@@ -24,8 +24,9 @@ export function Hero() {
         >
           <span className="w-2 h-2 rounded-full bg-brand-lime motion-safe:animate-pulse" />
           <span className="text-sm font-medium text-white/80 uppercase tracking-wider">
-            {siteConfig.name} • {siteConfig.description
+            {siteConfig.name} - {siteConfig.description}
           </span>
+
         </motion.div>
 
         <motion.h1
