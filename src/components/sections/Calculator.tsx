@@ -34,8 +34,8 @@ export function Calculator() {
 
   const estimatedPrice = useMemo(() => {
     if (isStorage) {
-      if (radius === "R13-R15") return 4000;
-      if (radius === "R16-R19") return 5000;
+      if (radius.includes("13") || radius.includes("14") || radius.includes("15")) return 4000;
+      if (radius.includes("16") || radius.includes("17") || radius.includes("18") || radius.includes("19")) return 5000;
       return 6000;
     }
 
