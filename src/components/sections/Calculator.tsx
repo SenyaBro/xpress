@@ -9,43 +9,78 @@ import { cn } from "@/src/utils/cn";
 
 export function Calculator() {
   const shouldReduceMotion = useReducedMotion();
+
   const [service, setService] = useState(siteConfig.services[0].id);
-  const [radius, setRadius] = useState(Object.keys(siteConfig.calculator.radiusMultipliers)[0]);
-  const [vehicle, setVehicle] = useState(Object.keys(siteConfig.calculator.vehicleTypes)[0]);
-  const [urgency, setUrgency] = useState(Object.keys(siteConfig.calculator.urgency)[0]);
-  const [distance, setDistance] = useState(Object.keys(siteConfig.calculator.distance)[0]);
+  const [radius, setRadius] = useState(
+    Object.keys(siteConfig.calculator.radiusMultipliers)[0]
+  );
+  const [vehicle, setVehicle] = useState(
+    Object.keys(siteConfig.calculator.vehicleTypes)[0]
+  );
+  const [urgency, setUrgency] = useState(
+    Object.keys(siteConfig.calculator.urgency)[0]
+  );
+  const [distance, setDistance] = useState(
+    Object.keys(siteConfig.calculator.distance)[0]
+  );
 
   const isDistanceUrgencyOnly = service === "battery" || service === "fuel";
+  const isStorage = service === "storage";
+
+  const disableRadius = isDistanceUrgencyOnly;
+  const disableVehicle = isDistanceUrgencyOnly || isStorage;
+  const disableUrgency = isStorage;
+  const disableDistance = isStorage;
+
   const estimatedPrice = useMemo(() => {
+    if (isStorage) {
+      if (radius === "13-15") return 4000;
+      if (radius === "16-19") return 5000;
+      return 6000;
+    }
+
     const baseService = siteConfig.services.find((s) => s.id === service);
     const basePrice = baseService
       ? baseService.priceFrom
       : siteConfig.calculator.basePrice;
 
-    const radiusMult = isDistanceUrgencyOnly
+    const radiusMult = disableRadius
       ? 1
       : siteConfig.calculator.radiusMultipliers[
       radius as keyof typeof siteConfig.calculator.radiusMultipliers
       ] || 1;
 
-    const vehicleMult = isDistanceUrgencyOnly
+    const vehicleMult = disableVehicle
       ? 1
       : siteConfig.calculator.vehicleTypes[
       vehicle as keyof typeof siteConfig.calculator.vehicleTypes
       ] || 1;
 
-    const urgencyMult =
-      siteConfig.calculator.urgency[
+    const urgencyMult = disableUrgency
+      ? 1
+      : siteConfig.calculator.urgency[
       urgency as keyof typeof siteConfig.calculator.urgency
       ] || 1;
 
-    const distanceAdd =
-      siteConfig.calculator.distance[
+    const distanceAdd = disableDistance
+      ? 0
+      : siteConfig.calculator.distance[
       distance as keyof typeof siteConfig.calculator.distance
       ] || 0;
 
     return Math.round(basePrice * radiusMult * vehicleMult * urgencyMult + distanceAdd);
-  }, [service, radius, vehicle, urgency, distance, isDistanceUrgencyOnly]);
+  }, [
+    service,
+    radius,
+    vehicle,
+    urgency,
+    distance,
+    isStorage,
+    disableRadius,
+    disableVehicle,
+    disableUrgency,
+    disableDistance,
+  ]);
 
   return (
     <Section id="calculator" className="bg-brand-dark">
@@ -57,11 +92,11 @@ export function Calculator() {
 
         <div className="max-w-4xl mx-auto glass-panel rounded-3xl p-6 md:p-10 border border-white/10 shadow-2xl">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-            {/* Form */}
             <div className="lg:col-span-2 space-y-8">
-              {/* Service */}
               <div>
-                <label className="block text-sm font-medium text-brand-muted mb-3 uppercase tracking-wider">Услуга</label>
+                <label className="block text-sm font-medium text-brand-muted mb-3 uppercase tracking-wider">
+                  Услуга
+                </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {siteConfig.services.map((s) => (
                     <button
@@ -82,67 +117,95 @@ export function Calculator() {
                 </div>
               </div>
 
-              {/* Radius & Vehicle */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                 <div>
-                  <label htmlFor="radius-select" className="block text-sm font-medium text-brand-muted mb-3 uppercase tracking-wider">Радиус колес</label>
+                  <label
+                    htmlFor="radius-select"
+                    className="block text-sm font-medium text-brand-muted mb-3 uppercase tracking-wider"
+                  >
+                    Радиус колес
+                  </label>
                   <select
                     id="radius-select"
                     value={radius}
                     onChange={(e) => setRadius(e.target.value)}
-                    disabled={isDistanceUrgencyOnly}
+                    disabled={disableRadius}
                     className={cn(
                       "w-full border rounded-xl px-4 py-3 text-white appearance-none",
-                      isDistanceUrgencyOnly
+                      disableRadius
                         ? "bg-white/[0.03] border-white/5 text-brand-muted cursor-not-allowed opacity-50"
                         : "bg-white/5 border-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
                     )}
                   >
                     {Object.keys(siteConfig.calculator.radiusMultipliers).map((r) => (
-                      <option key={r} value={r} className="bg-brand-dark text-white">{r}</option>
+                      <option key={r} value={r} className="bg-brand-dark text-white">
+                        {r}
+                      </option>
                     ))}
                   </select>
                 </div>
+
                 <div>
-                  <label htmlFor="vehicle-select" className="block text-sm font-medium text-brand-muted mb-3 uppercase tracking-wider">Тип авто</label>
+                  <label
+                    htmlFor="vehicle-select"
+                    className="block text-sm font-medium text-brand-muted mb-3 uppercase tracking-wider"
+                  >
+                    Тип авто
+                  </label>
                   <select
                     id="vehicle-select"
                     value={vehicle}
                     onChange={(e) => setVehicle(e.target.value)}
-                    disabled={isDistanceUrgencyOnly}
+                    disabled={disableVehicle}
                     className={cn(
                       "w-full border rounded-xl px-4 py-3 text-white appearance-none",
-                      isDistanceUrgencyOnly
+                      disableVehicle
                         ? "bg-white/[0.03] border-white/5 text-brand-muted cursor-not-allowed opacity-50"
                         : "bg-white/5 border-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
                     )}
                   >
                     {Object.keys(siteConfig.calculator.vehicleTypes).map((v) => (
-                      <option key={v} value={v} className="bg-brand-dark text-white">{v}</option>
+                      <option key={v} value={v} className="bg-brand-dark text-white">
+                        {v}
+                      </option>
                     ))}
                   </select>
                 </div>
               </div>
+
               {isDistanceUrgencyOnly ? (
                 <p className="text-sm text-brand-muted -mt-4">
-                  Для этой услуги учитываются только срочность и удаленность. Параметры радиуса и типа авто не влияют на расчет.
+                  Для этой услуги учитываются только срочность и удаленность.
+                  Параметры радиуса и типа авто не влияют на расчет.
+                </p>
+              ) : isStorage ? (
+                <p className="text-sm text-brand-muted -mt-4">
+                  Для хранения шин учитывается только размер комплекта:
+                  13–15 — 4 000 ₽, 16–19 — 5 000 ₽, 20+ — 6 000 ₽.
                 </p>
               ) : null}
-              {/* Urgency & Distance */}
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                 <div>
-                  <label className="block text-sm font-medium text-brand-muted mb-3 uppercase tracking-wider">Срочность</label>
+                  <label className="block text-sm font-medium text-brand-muted mb-3 uppercase tracking-wider">
+                    Срочность
+                  </label>
                   <div className="flex flex-col gap-2">
                     {Object.keys(siteConfig.calculator.urgency).map((u) => (
                       <button
                         key={u}
                         type="button"
-                        onClick={() => setUrgency(u)}
+                        onClick={() => {
+                          if (!disableUrgency) setUrgency(u);
+                        }}
+                        disabled={disableUrgency}
                         className={cn(
                           "px-4 py-2 rounded-lg text-left text-sm transition-all border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime",
-                          urgency === u
-                            ? "bg-brand-lime/10 border-brand-lime text-brand-lime"
-                            : "bg-transparent border-transparent text-brand-muted hover:text-white"
+                          disableUrgency
+                            ? "bg-transparent border-transparent text-brand-muted opacity-50 cursor-not-allowed"
+                            : urgency === u
+                              ? "bg-brand-lime/10 border-brand-lime text-brand-lime"
+                              : "bg-transparent border-transparent text-brand-muted hover:text-white"
                         )}
                         aria-pressed={urgency === u}
                       >
@@ -151,19 +214,27 @@ export function Calculator() {
                     ))}
                   </div>
                 </div>
+
                 <div>
-                  <label className="block text-sm font-medium text-brand-muted mb-3 uppercase tracking-wider">Удаленность</label>
+                  <label className="block text-sm font-medium text-brand-muted mb-3 uppercase tracking-wider">
+                    Удаленность
+                  </label>
                   <div className="flex flex-col gap-2">
                     {Object.keys(siteConfig.calculator.distance).map((d) => (
                       <button
                         key={d}
                         type="button"
-                        onClick={() => setDistance(d)}
+                        onClick={() => {
+                          if (!disableDistance) setDistance(d);
+                        }}
+                        disabled={disableDistance}
                         className={cn(
                           "px-4 py-2 rounded-lg text-left text-sm transition-all border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime",
-                          distance === d
-                            ? "bg-brand-lime/10 border-brand-lime text-brand-lime"
-                            : "bg-transparent border-transparent text-brand-muted hover:text-white"
+                          disableDistance
+                            ? "bg-transparent border-transparent text-brand-muted opacity-50 cursor-not-allowed"
+                            : distance === d
+                              ? "bg-brand-lime/10 border-brand-lime text-brand-lime"
+                              : "bg-transparent border-transparent text-brand-muted hover:text-white"
                         )}
                         aria-pressed={distance === d}
                       >
@@ -175,7 +246,6 @@ export function Calculator() {
               </div>
             </div>
 
-            {/* Result */}
             <div className="lg:col-span-1 bg-brand-darker rounded-2xl p-6 md:p-8 flex flex-col justify-between border border-white/5">
               <div>
                 <div className="flex items-center gap-3 mb-6">
@@ -186,7 +256,9 @@ export function Calculator() {
                 </div>
 
                 <div className="mb-2">
-                  <span className="text-sm text-brand-muted uppercase tracking-wider">Ориентировочно</span>
+                  <span className="text-sm text-brand-muted uppercase tracking-wider">
+                    Ориентировочно
+                  </span>
                 </div>
 
                 <div className="flex items-baseline gap-2 mb-8">
@@ -197,13 +269,14 @@ export function Calculator() {
                     animate={{ opacity: 1, y: 0 }}
                     className="text-4xl md:text-5xl font-display font-bold text-brand-lime"
                   >
-                    {estimatedPrice.toLocaleString('ru-RU')}
+                    {estimatedPrice.toLocaleString("ru-RU")}
                   </motion.span>
                   <span className="text-xl text-brand-muted">₽</span>
                 </div>
 
                 <p className="text-xs text-brand-muted mb-8 leading-relaxed">
-                  * Расчет является предварительным. Точная стоимость зависит от сложности работ и расходных материалов.
+                  * Расчет является предварительным. Точная стоимость зависит от
+                  сложности работ и расходных материалов.
                 </p>
               </div>
 
@@ -212,6 +285,7 @@ export function Calculator() {
                   <Phone className="w-4 h-4 mr-2" aria-hidden="true" />
                   Вызвать мастера
                 </ButtonLink>
+
                 <ButtonLink
                   href={siteConfig.contact.telegram}
                   target="_blank"
@@ -219,7 +293,10 @@ export function Calculator() {
                   variant="secondary"
                   className="w-full"
                 >
-                  <MessageCircle className="w-4 h-4 mr-2 text-[#229ED9]" aria-hidden="true" />
+                  <MessageCircle
+                    className="w-4 h-4 mr-2 text-[#229ED9]"
+                    aria-hidden="true"
+                  />
                   Уточнить в Telegram
                 </ButtonLink>
               </div>
