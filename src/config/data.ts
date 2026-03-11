@@ -37,17 +37,17 @@ export const siteConfig = {
         {
           name: "Шиномонтажный станок ROSSVIK V-526U",
           description: "Бережный монтаж и демонтаж низкопрофильной резины.",
-          image: "/equipment/1.png",
+          image: "equipment/1.png",
         },
         {
           name: "Балансировочный станок Rossvik VT-63",
           description: "Высокоточная балансировка колес любых размеров.",
-          image: "/equipment/2.png",
+          image: "equipment/2.png",
         },
         {
           name: "Компрессор Rossvik СБ4/С-100.LB30AB ",
           description: "Надежное оборудование для быстрой работы.",
-          image: "/equipment/3.png",
+          image: "equipment/3.png",
         },
       ],
     },
