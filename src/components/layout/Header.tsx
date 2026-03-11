@@ -26,20 +26,20 @@ export function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? "bg-brand-dark/90 backdrop-blur-md border-b border-white/5 py-3" : "bg-transparent py-5"
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? "bg-brand-dark/90 backdrop-blur-md border-b border-white/5 py-3" : "bg-transparent py-5"
+        }`}
     >
       <Container className="flex items-center justify-between">
-        <a href="#" className="flex items-center gap-2 group">
-          <div className="w-10 h-10 rounded-full bg-brand-lime flex items-center justify-center text-brand-dark font-display font-bold text-xl group-hover:scale-105 transition-transform">
-            X
-          </div>
-          <span className="font-display font-bold text-2xl tracking-tight text-white">
-            {siteConfig.name}
-          </span>
+        <a
+          href="#"
+          className="flex items-center rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
+        >
+          <img
+            src="/logo-xpresso.png"
+            alt="Х-прессО"
+            className="h-10 md:h-12 w-auto object-contain"
+          />
         </a>
-
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (

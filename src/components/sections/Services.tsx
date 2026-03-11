@@ -27,7 +27,7 @@ export function Services() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {siteConfig.services.map((service, index) => {
             const Icon = iconMap[service.icon as keyof typeof iconMap] || Wrench;
-            
+
             return (
               <motion.div
                 key={service.id}
@@ -38,29 +38,38 @@ export function Services() {
                 className="group relative glass-panel p-8 rounded-3xl overflow-hidden hover:border-brand-lime/20 transition-colors"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-brand-lime/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 motion-reduce:transition-none" />
-                
+
                 <div className="relative z-10 flex flex-col h-full">
                   <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center mb-6 text-brand-lime group-hover:scale-110 transition-transform duration-300 motion-reduce:transition-none">
                     <Icon className="w-6 h-6" aria-hidden="true" />
                   </div>
-                  
+
                   <h3 className="text-xl font-bold text-white mb-3">
                     {service.title}
                   </h3>
-                  
-                  <p className="text-brand-muted mb-8 flex-grow">
-                    {service.description}
-                  </p>
-                  
+
+                  {service.description ? (
+                    <p className="text-brand-muted mb-8 flex-grow">
+                      {service.description}
+                    </p>
+                  ) : (
+                    <div className="mb-8 flex-grow" />
+                  )}
+
                   <div className="flex items-center justify-between mt-auto pt-6 border-t border-white/5">
-                    <div className="flex flex-col">
+                    <div className="flex flex-col max-w-[220px]">
                       <span className="text-xs text-brand-muted uppercase tracking-wider mb-1">Стоимость</span>
-                      <span className="text-lg font-bold text-white">от {service.priceFrom} ₽</span>
+                      <span className="text-lg font-bold text-white">{service.price}</span>
+                      {service.note ? (
+                        <span className="text-xs text-brand-muted mt-2 leading-relaxed">
+                          {service.note}
+                        </span>
+                      ) : null}
                     </div>
-                    <a 
-                      href="#calculator" 
+                    <a
+                      href="#contacts"
                       className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white group-hover:bg-brand-lime group-hover:text-brand-dark transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
-                      aria-label={`Рассчитать стоимость для ${service.title}`}
+                      aria-label={`Оставить заявку на услугу ${service.title}`}
                     >
                       <ArrowRight className="w-5 h-5" aria-hidden="true" />
                     </a>

@@ -11,7 +11,7 @@ export function Contacts() {
   return (
     <Section id="contacts" className="bg-brand-dark relative overflow-hidden">
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-brand-lime/5 rounded-full blur-[100px] opacity-50 pointer-events-none" />
-      
+
       <Container className="relative z-10">
         <SectionHeader
           title="Свяжитесь с нами"
@@ -119,50 +119,50 @@ export function Contacts() {
             className="glass-panel p-8 md:p-12 rounded-3xl border border-brand-lime/20 shadow-2xl relative overflow-hidden"
           >
             <div className="absolute inset-0 bg-gradient-to-br from-brand-lime/10 to-transparent opacity-50" />
-            
+
             <div className="relative z-10">
               <h3 className="text-2xl font-bold text-white mb-2">Быстрый вызов</h3>
               <p className="text-brand-muted mb-8">
                 Выберите удобный способ связи. Мы ответим моментально.
               </p>
-              
+
               <div className="flex flex-col gap-4">
                 <ButtonLink href={siteConfig.contact.phoneLink} size="lg" className="w-full h-16 text-lg">
                   <Phone className="w-6 h-6 mr-3" aria-hidden="true" />
                   Позвонить {siteConfig.contact.phone}
                 </ButtonLink>
-                
+
                 <div className="relative flex items-center py-4">
                   <div className="flex-grow border-t border-white/10"></div>
                   <span className="flex-shrink-0 mx-4 text-brand-muted text-sm">или</span>
                   <div className="flex-grow border-t border-white/10"></div>
                 </div>
-                
-                <ButtonLink 
-                  href={siteConfig.contact.telegram} 
-                  target="_blank" 
+
+                <ButtonLink
+                  href={siteConfig.contact.telegram}
+                  target="_blank"
                   rel="noopener noreferrer"
-                  variant="secondary" 
-                  size="lg" 
+                  variant="secondary"
+                  size="lg"
                   className="w-full h-16 text-lg bg-[#229ED9]/10 text-[#229ED9] hover:bg-[#229ED9]/20 border border-[#229ED9]/20"
                 >
                   <MessageCircle className="w-6 h-6 mr-3" aria-hidden="true" />
                   Написать в Telegram
                 </ButtonLink>
-                
-                <ButtonLink 
-                  href={siteConfig.contact.whatsapp} 
-                  target="_blank" 
+
+                <ButtonLink
+                  href={siteConfig.contact.whatsapp}
+                  target="_blank"
                   rel="noopener noreferrer"
-                  variant="outline" 
-                  size="lg" 
+                  variant="outline"
+                  size="lg"
                   className="w-full h-16 text-lg border-white/10 hover:bg-white/5"
                 >
-                  <MessageCircle className="w-6 h-6 mr-3 text-[#25D366]" aria-hidden="true" />
-                  Написать в WhatsApp
+                  <MessageCircle className="w-6 h-6 mr-3" aria-hidden="true" />
+                  Написать в Max
                 </ButtonLink>
               </div>
-              
+
               <p className="text-xs text-brand-muted text-center mt-6">
                 Нажимая на кнопку, вы соглашаетесь с политикой конфиденциальности
               </p>

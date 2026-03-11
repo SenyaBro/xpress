@@ -7,19 +7,21 @@ export function Footer() {
       <Container>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div className="col-span-1 md:col-span-2">
-            <a href="#" className="flex items-center gap-2 mb-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1 -ml-1">
-              <div className="w-8 h-8 rounded-full bg-brand-lime flex items-center justify-center text-brand-dark font-display font-bold text-lg" aria-hidden="true">
-                X
-              </div>
-              <span className="font-display font-bold text-xl tracking-tight text-white">
-                {siteConfig.name}
-              </span>
+            <a
+              href="#"
+              className="inline-flex items-center mb-4 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime"
+            >
+              <img
+                src="/logo-xpresso.png"
+                alt="Экспрессо"
+                className="h-10 w-auto object-contain"
+              />
             </a>
             <p className="text-brand-muted max-w-sm">
               {siteConfig.description}. Быстрый, надежный и современный сервис для вашего автомобиля.
             </p>
           </div>
-          
+
           <div>
             <h4 className="text-white font-medium mb-4">Навигация</h4>
             <ul className="space-y-2">
@@ -43,7 +45,7 @@ export function Footer() {
             </ul>
           </div>
         </div>
-        
+
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-brand-muted text-sm">
             © {new Date().getFullYear()} {siteConfig.name}. Все права защищены.

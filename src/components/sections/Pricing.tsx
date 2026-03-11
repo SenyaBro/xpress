@@ -22,24 +22,28 @@ export function Pricing() {
                 transition={{ duration: 0.4, delay: index * 0.1 }}
                 className="flex items-center justify-between border-b border-white/5 pb-6 last:border-0 last:pb-0"
               >
-                <div className="pr-4">
+                <div className="pr-4 flex-1">
                   <h4 className="text-lg font-bold text-white mb-1">{service.title}</h4>
-                  <p className="text-sm text-brand-muted">{service.description}</p>
+                  {service.description ? (
+                    <p className="text-sm text-brand-muted">{service.description}</p>
+                  ) : null}
+                  {service.note ? (
+                    <p className="text-xs text-brand-muted mt-2">{service.note}</p>
+                  ) : null}
                 </div>
                 <div className="text-right pl-4 shrink-0">
-                  <span className="text-xs text-brand-muted uppercase tracking-wider block mb-1">от</span>
-                  <span className="text-xl font-display font-bold text-brand-lime whitespace-nowrap">
-                    {service.priceFrom} ₽
+                  <span className="text-xl font-display font-bold text-brand-lime text-right">
+                    {service.price}
                   </span>
                 </div>
               </motion.div>
             ))}
           </div>
           <div className="mt-10 pt-6 border-t border-white/10 text-center">
-             <p className="text-sm text-brand-muted">
-               Точная стоимость зависит от радиуса колес, типа автомобиля и удаленности. <br className="hidden sm:block" />
-               Воспользуйтесь <a href="#calculator" className="text-brand-lime hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1">калькулятором</a> для предварительного расчета.
-             </p>
+            <p className="text-sm text-brand-muted">
+              Конечная стоимость уточняется при оформлении заказа. <br className="hidden sm:block" />
+              Воспользуйтесь <a href="#calculator" className="text-brand-lime hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime rounded px-1">калькулятором</a> для предварительного расчета.
+            </p>
           </div>
         </div>
       </Container>
