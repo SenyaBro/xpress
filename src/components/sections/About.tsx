@@ -21,7 +21,7 @@ export function About() {
           subtitle="Концепция"
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-24">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-24">
           {siteConfig.about.features.map((feature, index) => {
             const Icon = icons[feature.title as keyof typeof icons] || CheckCircle2;
             return (
@@ -34,11 +34,11 @@ export function About() {
                 className="glass-panel p-8 rounded-3xl relative group overflow-hidden"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-brand-lime/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 motion-reduce:transition-none" />
-                
+
                 <div className="w-14 h-14 rounded-2xl bg-brand-lime/10 flex items-center justify-center mb-6 text-brand-lime relative z-10">
                   <Icon className="w-7 h-7" aria-hidden="true" />
                 </div>
-                
+
                 <h3 className="text-xl font-bold text-white mb-3 relative z-10">
                   {feature.title}
                 </h3>
