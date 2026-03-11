@@ -1,6 +1,6 @@
 export const siteConfig = {
   name: "Экспрессо",
-  description: "Выездной шиномонтаж в Сысерртском районе",
+  description: "Выездной шиномонтаж в Сысертском районе",
   contact: {
     phone: "+7 912 289 72 18",
     phoneLink: "tel:+79122897218",
