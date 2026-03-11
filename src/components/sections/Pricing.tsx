@@ -20,9 +20,9 @@ export function Pricing() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: index * 0.1 }}
-                className="flex items-center justify-between border-b border-white/5 pb-6 last:border-0 last:pb-0"
+                className="flex flex-col items-start gap-4 border-b border-white/5 pb-6 last:border-0 last:pb-0 sm:flex-row sm:items-center sm:justify-between"
               >
-                <div className="pr-4 flex-1">
+                <div className="w-full min-w-0">
                   <h4 className="text-lg font-bold text-white mb-1">{service.title}</h4>
                   {service.description ? (
                     <p className="text-sm text-brand-muted">{service.description}</p>
@@ -31,8 +31,9 @@ export function Pricing() {
                     <p className="text-xs text-brand-muted mt-2">{service.note}</p>
                   ) : null}
                 </div>
-                <div className="text-right pl-4 shrink-0">
-                  <span className="text-xl font-display font-bold text-brand-lime text-right">
+
+                <div className="w-full sm:w-auto sm:max-w-[260px] text-left sm:text-right">
+                  <span className="block text-lg sm:text-xl font-display font-bold text-brand-lime leading-tight whitespace-normal break-words">
                     {service.price}
                   </span>
                 </div>
